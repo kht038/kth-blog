@@ -1,0 +1,88 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type TagGq {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String
+  postCount: Float!
+}
+
+type PostGq {
+  id: ID!
+  title: String!
+  slug: String!
+  status: PostStatus!
+  excerpt: String
+  coverImage: String
+  contentBlocks: JSON!
+  contentHtml: String
+  tags: [TagGq!]!
+  authorId: String
+}
+
+enum PostStatus {
+  draft
+  published
+  archived
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type PostList {
+  items: [PostGq!]!
+  total: Int!
+}
+
+type Query {
+  posts(filter: PostsFilterInputGq): PostList!
+  postBySlug(slug: String!): PostGq
+  tags: [TagGq!]!
+  tagBySlug(slug: String!): TagGq
+}
+
+input PostsFilterInputGq {
+  tagIdsAll: [String!]
+  tagIdsAny: [String!]
+  status: PostStatus
+  q: String
+  sort: String = "publishedAt:desc"
+  skip: Float = 0
+  limit: Float = 10
+}
+
+type Mutation {
+  upsertPost(input: UpsertPostInputGq!): PostGq!
+  removePost(id: String!): Boolean!
+  upsertTag(input: UpsertTagInputGq!): TagGq!
+}
+
+input UpsertPostInputGq {
+  id: String
+  title: String!
+  slug: String!
+  status: PostStatus! = draft
+  excerpt: String
+  coverImage: String
+  contentBlocks: JSON!
+  contentHtml: String
+  tagIds: [String!]! = []
+  publishedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input UpsertTagInputGq {
+  id: String
+  name: String
+  slug: String
+  description: String
+}

@@ -1,0 +1,28 @@
+{
+  "name": "kth-blog",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "shared/*"
+  ],
+  "scripts": {
+    "dev:api": "pnpm -F api start:dev",
+    "dev:user": "pnpm -F user-web dev",
+    "dev:admin": "pnpm -F admin-web dev",
+    "build:all": "pnpm -r build",
+    "lint": "pnpm -r lint"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "author": "kth",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "pnpm": {
+    "overrides": {
+      "mongodb": "6.16.0"
+    }
+  }
+}
