@@ -39,11 +39,29 @@ type PostList {
   total: Int!
 }
 
+type UserGq {
+  id: String!
+  email: String!
+  name: String!
+  lastLoginAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthPayload {
+  accessToken: String!
+  user: UserGq!
+}
+
 type Query {
   posts(filter: PostsFilterInputGq): PostList!
   postBySlug(slug: String!): PostGq
   tags: [TagGq!]!
   tagBySlug(slug: String!): TagGq
+  me: UserGq!
 }
 
 input PostsFilterInputGq {
@@ -60,6 +78,9 @@ type Mutation {
   upsertPost(input: UpsertPostInputGq!): PostGq!
   removePost(id: String!): Boolean!
   upsertTag(input: UpsertTagInputGq!): TagGq!
+  signIn(email: String!, password: String!): AuthPayload!
+  refreshToken: AuthPayload!
+  logout: Boolean!
 }
 
 input UpsertPostInputGq {
@@ -74,11 +95,6 @@ input UpsertPostInputGq {
   tagIds: [String!]! = []
   publishedAt: DateTime
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 input UpsertTagInputGq {
   id: String

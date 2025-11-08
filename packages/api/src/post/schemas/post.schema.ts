@@ -28,7 +28,6 @@ export class Post extends Document {
 
 export const PostSchema = SchemaFactory.createForClass(Post);
 
-PostSchema.index({ slug: 1 }, { unique: true });
 PostSchema.index({ status: 1, publishedAt: -1 }); // 목록 정렬/필터
 PostSchema.index({ tagIds: 1 }); // 태그 필터
 PostSchema.index({ title: 'text', excerpt: 'text' }); // 제목/요약 검색(텍스트)

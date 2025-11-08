@@ -1,8 +1,10 @@
 import GraphQLJSON from 'graphql-type-json';
 import {
   Field,
+  GraphQLISODateTime,
   ID,
   InputType,
+  Int,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
@@ -30,19 +32,27 @@ export class PostGq {
   @Field({ nullable: true }) authorId: string;
 }
 
+@ObjectType()
+export class PostList {
+  @Field(() => [PostGq]) items: PostGq[];
+  @Field(() => Int) total: number;
+}
+
 @InputType()
 export class UpsertPostInputGq {
   @Field({ nullable: true }) id?: string;
   @Field() title!: string;
   @Field() slug!: string;
   @Field(() => PostStatusEnum, { defaultValue: PostStatusEnum.draft })
-  status?: PostStatusEnum;
+  status!: PostStatusEnum;
   @Field({ nullable: true }) excerpt?: string;
   @Field({ nullable: true }) coverImage?: string;
   @Field(() => GraphQLJSON) contentBlocks!: any;
   @Field({ nullable: true }) contentHtml?: string;
   @Field(() => [String], { defaultValue: [] }) tagIds!: string[]; // Tag ObjectId 문자열
-  @Field({ nullable: true }) publishedAt?: Date;
+  @Field(() => GraphQLISODateTime, { nullable: true }) publishedAt?:
+    | Date
+    | undefined;
 }
 
 @InputType()

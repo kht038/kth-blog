@@ -10,5 +10,4 @@ export class Tag extends Document {
 }
 export const TagSchema = SchemaFactory.createForClass(Tag);
 
-TagSchema.index({ slug: 1 }, { unique: true });
 TagSchema.index({ name: 1 });

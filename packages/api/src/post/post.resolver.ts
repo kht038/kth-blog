@@ -1,27 +1,17 @@
 // src/posts/posts.resolver.ts
-import {
-  Args,
-  Mutation,
-  Query,
-  Resolver,
-  ObjectType,
-  Field,
-  Int,
-} from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { PostService } from './post.service';
 import {
   PostGq,
+  PostList,
   PostsFilterInputGq,
   UpsertPostInputGq,
 } from './models/post.model';
-
-@ObjectType()
-class PostList {
-  @Field(() => [PostGq]) items: PostGq[];
-  @Field(() => Int) total: number;
-}
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => PostGq)
+@UseGuards(GqlAuthGuard)
 export class PostResolver {
   constructor(private readonly svc: PostService) {}
 

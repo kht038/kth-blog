@@ -2,8 +2,11 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TagService } from './tag.service';
 import { TagGq, UpsertTagInputGq } from './models/tag.model';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => TagGq)
+@UseGuards(GqlAuthGuard)
 export class TagResolver {
   constructor(private readonly svc: TagService) {}
 
